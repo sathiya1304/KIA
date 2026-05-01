@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kia India — Movement that Inspires</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #111; background: #fff; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* ========== NAV ========== */
+    .nav {
+      background: #000;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-left a, .nav-right a {
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 400;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+    .nav-right .dealer-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .dealer-icon {
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid #fff;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dealer-icon::after {
+      content: '+';
+      font-size: 10px;
+      color: #fff;
+      line-height: 1;
+    }
+    .nav-logo {
+      font-size: 26px;
+      font-weight: 900;
+      font-style: italic;
+      color: #fff;
+      letter-spacing: -3px;
+      transform: skewX(-6deg);
+      display: inline-block;
+      user-select: none;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 1px;
+    }
+    /* mobile nav drawer */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: #111;
+      padding: 20px 24px;
+      gap: 16px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: #fff;
+      font-size: 14px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      overflow: hidden;
+      background: #1a2535;
+    }
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 60%;
+    }
+    .hero-tint {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.08) 55%, rgba(0,0,0,0.18) 100%);
+    }
+    .hero-content {
+      position: absolute;
+      top: 44%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+      width: 100%;
+      max-width: 640px;
+      padding: 0 24px;
+    }
+    .hero-content h1 {
+      font-size: 34px;
+      font-weight: 700;
+      line-height: 1.25;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+    }
+    .hero-content .rated {
+      font-size: 14.5px;
+      margin-top: 6px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+      font-weight: 400;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px auto 0;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 4px;
+      padding: 8px 16px;
+    }
+    .bncap-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+    }
+    .bncap-top {
+      font-size: 7px;
+      font-weight: 800;
+      color: #003087;
+      line-height: 1;
+      text-align: center;
+    }
+    .bncap-bottom {
+      font-size: 5.5px;
+      font-weight: 600;
+      color: #003087;
+      margin-top: 1px;
+    }
+    .bncap-stars {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+    .bncap-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.3px;
+    }
+    .stars-row {
+      display: flex;
+      gap: 2px;
+    }
+    .stars-row span {
+      color: #FFD700;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .hero-cta {
+      display: inline-block;
+      margin-top: 22px;
+      padding: 10px 34px;
+      border: 1.5px solid #fff;
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 500;
+      letter-spacing: 0.6px;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .hero-cta:hover { background: rgba(255,255,255,0.12); }
+    .hero-disclaimer {
+      position: absolute;
+      bottom: 60px;
+      left: 18px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.65);
+    }
+    .hero-next {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid rgba(255,255,255,0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.8);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* ========== EXPLORE THE RANGE ========== */
+    .section-explore {
+      background: #fff;
+      padding: 64px 80px 72px;
+    }
+    .section-heading {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 22px;
+      letter-spacing: -0.3px;
+    }
+    .tab-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .tab {
+      padding: 7px 28px;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid #333;
+      background: #fff;
+      color: #333;
+      letter-spacing: 0.2px;
+      outline: none;
+    }
+    .tab:not(:first-child) { border-left: none; }
+    .tab.active {
+      background: #111;
+      color: #fff;
+    }
+    .car-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .car-card {
+      border: 1px solid #ddd;
+    }
+    .car-card-img {
+      width: 100%;
+      height: 196px;
+      object-fit: cover;
+    }
+    .car-card-body {
+      padding: 20px 18px 18px;
+    }
+    .car-card-body h3 {
+      font-size: 14.5px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: #111;
+      margin-bottom: 10px;
+    }
+    .car-card-body p {
+      font-size: 11.5px;
+      color: #555;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .btn-outline-dark {
+      display: block;
+      padding: 9px 14px;
+      border: 1.5px solid #111;
+      background: #fff;
+      color: #111;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+    }
+    .btn-solid-dark {
+      display: block;
+      padding: 9px 14px;
+      border: 1.5px solid #111;
+      background: #111;
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+    }
+
+    /* ========== START YOUR KIA JOURNEY ========== */
+    .section-journey {
+      background: #f0f0f0;
+      padding: 64px 80px 72px;
+    }
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 40px;
+    }
+    .journey-card {
+      background: #e2e2e2;
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+    }
+    .j-icon {
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .j-icon svg {
+      width: 38px;
+      height: 38px;
+      stroke: #222;
+      fill: none;
+      stroke-width: 1.5;
+    }
+    .journey-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111;
+      margin-top: 4px;
+    }
+    .journey-card p {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+    }
+    .journey-card .phone {
+      font-size: 13px;
+      font-weight: 700;
+      color: #111;
+      margin-top: 2px;
+    }
+
+    /* ========== KNOW THE BRAND ========== */
+    .section-brand {
+      background: #fff;
+      padding: 64px 80px 72px;
+    }
+    .section-desc {
+      text-align: center;
+      font-size: 13.5px;
+      color: #555;
+      max-width: 680px;
+      margin: 0 auto 44px;
+      line-height: 1.75;
+    }
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .brand-card {}
+    .brand-card-img {
+      width: 100%;
+      height: 174px;
+      object-fit: cover;
+    }
+    .brand-card-gptw {
+      height: 174px;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px;
+    }
+    .gptw-certified-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #444;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .gptw-badge {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e8001d 60%, #c80019 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 7.5px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.35;
+      padding: 8px;
+      letter-spacing: 0.3px;
+    }
+    .brand-card-body {
+      padding: 16px 0 6px;
+    }
+    .brand-card-body h3 {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 8px;
+    }
+    .brand-card-body p {
+      font-size: 11.5px;
+      color: #555;
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+    .btn-sm {
+      display: inline-block;
+      padding: 8px 22px;
+      border: 1.5px solid #111;
+      background: #fff;
+      color: #111;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      letter-spacing: 0.2px;
+    }
+
+    /* ========== MOBILITY SOLUTIONS ========== */
+    .section-mobility {
+      background: #f7f4f0;
+      padding: 64px 80px 72px;
+    }
+    .mobility-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 44px;
+    }
+    .mobility-card-img {
+      width: 100%;
+      height: 196px;
+      object-fit: cover;
+    }
+    .mobility-card-body {
+      padding: 18px 0 6px;
+    }
+    .mobility-card-body h3 {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 8px;
+    }
+    .mobility-card-body p {
+      font-size: 11.5px;
+      color: #555;
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background: #181818;
+      color: #aaa;
+      padding: 44px 80px 28px;
+    }
+    .footer-logo {
+      font-size: 24px;
+      font-weight: 900;
+      font-style: italic;
+      color: #fff;
+      letter-spacing: -2.5px;
+      transform: skewX(-6deg);
+      display: inline-block;
+      margin-bottom: 30px;
+      user-select: none;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 20px;
+      border-top: 1px solid #2e2e2e;
+      padding-top: 28px;
+    }
+    .footer-col h4 {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 14px;
+      letter-spacing: 0.3px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 7px; }
+    .footer-col ul li a {
+      font-size: 10.5px;
+      color: #888;
+      line-height: 1.4;
+    }
+    .footer-col ul li a:hover { color: #ccc; }
+    .footer-bottom {
+      margin-top: 30px;
+      border-top: 1px solid #2e2e2e;
+      padding-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .social-icons {
+      display: flex;
+      gap: 10px;
+    }
+    .social-icon {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #444;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .footer-copy {
+      font-size: 10px;
+      color: #555;
+      margin-left: auto;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1024px) {
+      .section-explore, .section-journey, .section-brand, .section-mobility, footer {
+        padding-left: 40px;
+        padding-right: 40px;
+      }
+      .nav { padding: 0 24px; }
+      .footer-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-left, .nav-right { display: none; }
+      .hamburger { display: flex; }
+      .hero { height: 400px; }
+      .hero-content h1 { font-size: 22px; }
+      .hero-content .rated { font-size: 13px; }
+      .section-explore, .section-journey, .section-brand, .section-mobility, footer {
+        padding: 44px 24px 52px;
+      }
+      .car-grid { grid-template-columns: 1fr; }
+      .brand-grid { grid-template-columns: 1fr; }
+      .mobility-grid { grid-template-columns: 1fr; }
+      .journey-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-bottom { flex-wrap: wrap; gap: 12px; }
+      .footer-copy { margin-left: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { height: 300px; }
+      .hero-content h1 { font-size: 18px; }
+      .section-heading { font-size: 22px; }
+      .hero-badge { padding: 6px 10px; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <a href="#">Cars</a>
+    <a href="#">Buy</a>
+    <a href="#">Owners</a>
+    <a href="#">VR Showroom</a>
+  </div>
+  <div class="nav-logo">KIA</div>
+  <div class="nav-right">
+    <a href="#">Kia Connect 2.0</a>
+    <a href="#">Kia EV Edge</a>
+    <a href="#" class="dealer-link"><span class="dealer-icon"></span> Find a Dealer</a>
+  </div>
+  <div class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#">Cars</a>
+  <a href="#">Buy</a>
+  <a href="#">Owners</a>
+  <a href="#">VR Showroom</a>
+  <a href="#">Kia Connect 2.0</a>
+  <a href="#">Kia EV Edge</a>
+  <a href="#">Find a Dealer</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <img
+    class="hero-img"
+    src="https://images.unsplash.com/photo-1617788138017-80ad40651399?w=1600&q=85"
+    alt="Kia Seltos — All-new"
+  >
+  <div class="hero-tint"></div>
+  <div class="hero-content">
+    <h1>All-new Seltos<br>scores the highest in BNCAP.</h1>
+    <p class="rated">Rated 5-stars (76.7 out of 81).</p>
+    <div class="hero-badge">
+      <div class="bncap-circle">
+        <div class="bncap-top">BHARAT</div>
+        <div class="bncap-bottom">NCAP</div>
+      </div>
+      <div class="bncap-stars">
+        <div class="bncap-label">Adult Occupant</div>
+        <div class="stars-row">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+      </div>
+    </div>
+    <a href="#" class="hero-cta">Know More</a>
+  </div>
+  <span class="hero-disclaimer">*Amongst all ICE cars tested under BNCAP.</span>
+  <div class="hero-next">›</div>
+</section>
+
+<!-- EXPLORE THE RANGE -->
+<section class="section-explore">
+  <h2 class="section-heading">Explore The Range</h2>
+  <div class="tab-bar">
+    <button class="tab active" id="tab-suv">SUV</button>
+    <button class="tab" id="tab-mpv">MPV</button>
+    <button class="tab" id="tab-ev">EV</button>
+  </div>
+  <div class="car-grid" id="car-grid">
+    <div class="car-card">
+      <img class="car-card-img" src="https://images.unsplash.com/photo-1638618164682-12b986ec2a75?w=700&q=80" alt="Kia Seltos">
+      <div class="car-card-body">
+        <h3>SELTOS</h3>
+        <p>Bolder, bigger, and unmistakably badass. The all-new Seltos commands attention with muscular design and confident comfort that turns every drive into an experience.</p>
+        <div class="card-actions">
+          <a href="#" class="btn-outline-dark">Know More</a>
+          <a href="#" class="btn-solid-dark">Book a Test drive</a>
+        </div>
+      </div>
+    </div>
+    <div class="car-card">
+      <img class="car-card-img" src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=700&q=80" alt="Kia Sonet">
+      <div class="car-card-body">
+        <h3>SONET</h3>
+        <p>Untempered by design, the new Kia Sonet unleashes raw power, bold style, and smart tech to set your wild driving instincts free.</p>
+        <div class="card-actions">
+          <a href="#" class="btn-outline-dark">Know More</a>
+          <a href="#" class="btn-solid-dark">Book a Test drive</a>
+        </div>
+      </div>
+    </div>
+    <div class="car-card">
+      <img class="car-card-img" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=700&q=80" alt="Kia Syros">
+      <div class="car-card-body">
+        <h3>SYROS</h3>
+        <p>The new Kia Syros marks the next chapter in SUVs, blending futuristic design, smart technology, and first-of-its-kind features into a bold statement of progress and evolution.</p>
+        <div class="card-actions">
+          <a href="#" class="btn-outline-dark">Know More</a>
+          <a href="#" class="btn-solid-dark">Book a Test drive</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- START YOUR KIA JOURNEY -->
+<section class="section-journey">
+  <h2 class="section-heading">Start Your Kia Journey</h2>
+  <div class="journey-grid">
+    <div class="journey-card">
+      <div class="j-icon">
+        <svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+          <rect x="7" y="3" width="18" height="24" rx="1.5"/>
+          <line x1="11" y1="10" x2="21" y2="10"/>
+          <line x1="11" y1="14" x2="21" y2="14"/>
+          <line x1="11" y1="18" x2="17" y2="18"/>
+          <path d="M22 28 L22 36 M18 32 L22 36 L26 32"/>
+        </svg>
+      </div>
+      <h3>Download Brochure</h3>
+      <p>Know it all.</p>
+    </div>
+    <div class="journey-card">
+      <div class="j-icon">
+        <svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="19" cy="14" r="10"/>
+          <circle cx="19" cy="14" r="4"/>
+          <line x1="19" y1="4" x2="19" y2="1"/>
+          <line x1="19" y1="24" x2="19" y2="27"/>
+          <line x1="29" y1="14" x2="32" y2="14"/>
+          <line x1="6" y1="14" x2="9" y2="14"/>
+          <path d="M8 30 Q19 22 30 30"/>
+        </svg>
+      </div>
+      <h3>Find a Dealer</h3>
+      <p>Locate the nearest Kia dealer(s) now!</p>
+    </div>
+    <div class="journey-card">
+      <div class="j-icon">
+        <svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="4" width="22" height="28" rx="2"/>
+          <rect x="10" y="9" width="14" height="4" rx="1"/>
+          <line x1="10" y1="18" x2="24" y2="18"/>
+          <line x1="10" y1="22" x2="20" y2="22"/>
+          <line x1="10" y1="26" x2="16" y2="26"/>
+        </svg>
+      </div>
+      <h3>Get a Quote</h3>
+      <p>Know the precise price as per your location!</p>
+    </div>
+    <div class="journey-card">
+      <div class="j-icon">
+        <svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 6 C8 6 6 9 6 12 C6 24 26 34 30 28 C32 25 32 22 29 20 L25 18 C23 17 21 19 20 21 C17 19 14 16 12 13 C14 12 16 10 15 8 Z"/>
+        </svg>
+      </div>
+      <h3>Call us</h3>
+      <p>We'll be happy to answer all your queries.</p>
+      <p class="phone">1800 108 5000</p>
+    </div>
+  </div>
+</section>
+
+<!-- KNOW THE BRAND -->
+<section class="section-brand">
+  <h2 class="section-heading">Know The Brand</h2>
+  <p class="section-desc">At Kia, we're shaping unforgettable experiences with over 15 lakh cars on the road. With an annual production capacity of 300,000 units, proudly Made in India, we're driven by our brand slogan, "Movement that Inspires."</p>
+  <div class="brand-grid">
+    <div class="brand-card">
+      <img class="brand-card-img" src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=700&q=80" alt="About Us">
+      <div class="brand-card-body">
+        <h3>About Us</h3>
+        <p>With over 15 lakh Kia cars on Indian roads, we go beyond quality, creating memorable experiences and redefining every journey, mile after mile.</p>
+        <a href="#" class="btn-sm">Know More</a>
+      </div>
+    </div>
+    <div class="brand-card">
+      <img class="brand-card-img" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=700&q=80" alt="Vision and Values">
+      <div class="brand-card-body">
+        <h3>Vision and Values</h3>
+        <p>People we serve are at the core of everything we do. United in vision, we drive sustainable mobility solutions inspiring progress, every single day.</p>
+        <a href="#" class="btn-sm">Know More</a>
+      </div>
+    </div>
+    <div class="brand-card">
+      <div class="brand-card-gptw">
+        <div class="gptw-certified-label">Certified<br>Great Place to Work®<br>for the 2nd year in a row!</div>
+        <div class="gptw-badge">GREAT<br>PLACE<br>TO<br>WORK®<br><span style="font-size:6.5px;font-weight:400;">Certified</span></div>
+      </div>
+      <div class="brand-card-body">
+        <h3>Kia. Proudly GPTW™ Certified</h3>
+        <p>Kia is recognised as a Great Place to Work™, reflecting strong culture, trusted leadership, and engaged people.</p>
+        <a href="#" class="btn-sm">Know More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPLORE OUR MOBILITY SOLUTIONS -->
+<section class="section-mobility">
+  <h2 class="section-heading">Explore Our Mobility Solutions</h2>
+  <p class="section-desc">We offer smart mobility solutions that provide superior convenience, through Kia-CPO, Service Care, K-Charge, Kia Connect 2.0 and more.<br>Our solutions are designed to enhance your driving experience with better workshops, parts, and services.</p>
+  <div class="mobility-grid">
+    <div class="mobility-card">
+      <img class="mobility-card-img" src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=700&q=80" alt="Kia Certified Pre-Owned">
+      <div class="mobility-card-body">
+        <h3>Kia Certified Pre-Owned</h3>
+        <p>Drive with confidence in a Kia Certified Pre-Owned car: rigorously checked, warranty assured, and easy exchange.</p>
+        <a href="#" class="btn-sm">Know More</a>
+      </div>
+    </div>
+    <div class="mobility-card">
+      <img class="mobility-card-img" src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=700&q=80" alt="Service Care">
+      <div class="mobility-card-body">
+        <h3>Service Care</h3>
+        <p>Kia Service delivers a customer-centric experience that inspires ownership, with Service Care by your side every step.</p>
+        <a href="#" class="btn-sm">Know More</a>
+      </div>
+    </div>
+    <div class="mobility-card">
+      <img class="mobility-card-img" src="https://images.unsplash.com/photo-1593941707882-a56bbf6b6571?w=700&q=80" alt="K-Charge">
+      <div class="mobility-card-body">
+        <h3>K-Charge</h3>
+        <p>Empowering your journey with an extensive network of over 11,000 charging points across India, making every drive effortless.</p>
+        <a href="#" class="btn-sm">Know More</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">KIA</div>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>VR Showroom</h4>
+      <ul>
+        <li><a href="#">Book Online</a></li>
+        <li><a href="#">My Order</a></li>
+        <li><a href="#">Locate a Showroom</a></li>
+        <li><a href="#">Test Drive</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Become a Kia Partner</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Cars</h4>
+      <ul>
+        <li><a href="#">ALL NEW SELTOS</a></li>
+        <li><a href="#">CARENS CLAVIS EV</a></li>
+        <li><a href="#">CARENS CLAVIS</a></li>
+        <li><a href="#">SYROS</a></li>
+        <li><a href="#">SONET</a></li>
+        <li><a href="#">CARENS</a></li>
+        <li><a href="#">CARNIVAL</a></li>
+        <li><a href="#">EV6</a></li>
+        <li><a href="#">EV9</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Buy</h4>
+      <ul>
+        <li><a href="#">Configure</a></li>
+        <li><a href="#">Download Brochure</a></li>
+        <li><a href="#">Find a Dealer</a></li>
+        <li><a href="#">Leasing</a></li>
+        <li><a href="#">Test Drive</a></li>
+        <li><a href="#">Book Online</a></li>
+        <li><a href="#">EMI Calculator</a></li>
+        <li><a href="#">Kia Certified Pre-Owned</a></li>
+        <li><a href="#">Get a Quote</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Owners</h4>
+      <ul>
+        <li><a href="#">Kia Service</a></li>
+        <li><a href="#">Service and Maintenance</a></li>
+        <li><a href="#">Service Offerings</a></li>
+        <li><a href="#">Customer Awareness</a></li>
+        <li><a href="#">EV Owners</a></li>
+        <li><a href="#">IoT Experience</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Discover Kia</h4>
+      <ul>
+        <li><a href="#">Kia in India</a></li>
+        <li><a href="#">Kia Careers</a></li>
+        <li><a href="#">News</a></li>
+        <li><a href="#">PR</a></li>
+        <li><a href="#">CSR</a></li>
+        <li><a href="#">Become a Kia Partner</a></li>
+        <li><a href="#">Kia Forward Blog</a></li>
+        <li><a href="#">Kia GPTW Certified</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Kia Drive to IIFA World</a></li>
+        <li><a href="#">Flat 2025 Campaign T&amp;C</a></li>
+        <li><a href="#">Kia Work with Champions T&amp;C</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Vulnerability Disclosure Policy</a></li>
+        <li><a href="#">Digital Key T&amp;C</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Online Sales T&amp;C</a></li>
+        <li><a href="#">Whistle Blower Policy</a></li>
+        <li><a href="#">CSR Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="social-icons">
+      <a href="#" class="social-icon" title="Facebook">f</a>
+      <a href="#" class="social-icon" title="X / Twitter">𝕏</a>
+      <a href="#" class="social-icon" title="Instagram">&#9633;</a>
+      <a href="#" class="social-icon" title="YouTube">&#9654;</a>
+      <a href="#" class="social-icon" title="Pinterest">P</a>
+    </div>
+    <span class="footer-copy">© 2025 Kia India Private Limited. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+    });
+  });
+
+  // Hamburger toggle
+  var hamburger = document.getElementById('hamburger');
+  var mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', function() {
+    mobileMenu.classList.toggle('open');
+  });
+</script>
+</body>
+</html>
